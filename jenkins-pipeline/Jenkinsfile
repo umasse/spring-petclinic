@@ -51,7 +51,7 @@ pipeline {
             }
             steps {
                 //sh 'docker build -t "petclinic:latest" -f DeployDockerfile .'
-                sh './deploy_latest.sh'
+                sh "${env.WORKSPACE}/deploy_latest.sh"
             }
         }        
     }
