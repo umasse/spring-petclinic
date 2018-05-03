@@ -1,17 +1,17 @@
 pipeline {
     agent none
     stages {
-        stage('Build') {
-            agent {
-              docker {
-                image 'maven:3-jdk-8' 
-                args '-v /root/.m2:/root/.m2 --network=devonpresentation_devondemonet'
-              }
-            }
-            steps {
-                sh 'mvn -B -DskipTests clean package' 
-            }
-        }
+        // stage('Build') {
+        //     agent {
+        //       docker {
+        //         image 'maven:3-jdk-8' 
+        //         args '-v /root/.m2:/root/.m2 --network=devonpresentation_devondemonet'
+        //       }
+        //     }
+        //     steps {
+        //         sh 'mvn -B -DskipTests clean package' 
+        //     }
+        // }
         // stage('Test') {
         //     agent {
         //       docker {
