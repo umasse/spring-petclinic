@@ -6,11 +6,12 @@ node {
      commit_id = readFile('.git/commit-id').trim()
      sh "echo ${commit_id}"
    }
-   stage('test') {
+   stage('Test') {
      def myTestContainer = docker.image('maven:3-jdk-8')
      myTestContainer.pull()
      myTestContainer.inside {
        sh 'echo "This is running inside maven container"'
+       sh 'echo $HOME'
      }
    }
 }                                          
