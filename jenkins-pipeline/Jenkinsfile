@@ -50,7 +50,8 @@ pipeline {
               }
             }
             steps {
-                sh 'docker build -t "petclinic:latest" -f DeployDockerfile .'
+                //sh 'docker build -t "petclinic:latest" -f DeployDockerfile .'
+                sh './deploy_latest.sh'
             }
         }        
     }
