@@ -1,23 +1,3 @@
-// node {
-//    def commit_id
-//    stage('Preparation') {
-//      checkout scm
-//      sh "git rev-parse --short HEAD > .git/commit-id"
-//      commit_id = readFile('.git/commit-id').trim()
-//      sh "echo ${commit_id}"
-//    }
-//    stage('Test') {
-//     //  def myTestContainer = docker.image('maven:3-jdk-8').withRun("-v maven-data:/root/.m2")
-//     //  myTestContainer.pull()
-//     //  myTestContainer.inside {
-//     //    sh 'echo "This is running inside maven container"'
-//     //    sh 'echo $HOME'
-//     //    sh 'mvn clean package'
-//     //  }
-//     sh "docker run -a STDOUT -a STDERR --rm -v ${env.WORKSPACE}:/petclinic -v maven-data:/root/.m2  -w /petclinic maven:3-jdk-8 ls -l"
-//    }
-// }                                          
-
 pipeline {
     agent {
         docker {
@@ -29,6 +9,16 @@ pipeline {
         stage('Build') { 
             steps {
                 sh 'mvn -B -DskipTests clean package' 
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
             }
         }
     }
