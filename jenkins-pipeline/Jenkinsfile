@@ -30,6 +30,7 @@ pipeline {
             }
         }
         stage('Deploy') {
+            agent none
             when {
               expression {
                 currentBuild.result == null || currentBuild.result == 'SUCCESS' 
