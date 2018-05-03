@@ -7,12 +7,16 @@ node {
      sh "echo ${commit_id}"
    }
    stage('Test') {
-     def myTestContainer = docker.image('maven:3-jdk-8').withRun("-v maven-data:/root/.m2")
-     myTestContainer.pull()
-     myTestContainer.inside {
-       sh 'echo "This is running inside maven container"'
-       sh 'echo $HOME'
-       sh 'mvn clean package'
-     }
+    //  def myTestContainer = docker.image('maven:3-jdk-8').withRun("-v maven-data:/root/.m2")
+    //  myTestContainer.pull()
+    //  myTestContainer.inside {
+    //    sh 'echo "This is running inside maven container"'
+    //    sh 'echo $HOME'
+    //    sh 'mvn clean package'
+    //  }
+    sh "docker run -it --rm -v ${env.WORKSPACE}:/src -v maven-data:/root/.m2 -v ${env.WORKSPACE}/target:/src/target -w /src maven:3-jdk-8 ls -l"
    }
 }                                          
+
+
+ 
