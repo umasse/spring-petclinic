@@ -12,36 +12,36 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package' 
             }
         }
-        stage('Test') {
-            agent {
-              docker {
-                image 'maven:3-jdk-8' 
-                args '-v /root/.m2:/root/.m2 --network=devonpresentation_devondemonet'
-              }
-            }
-            steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
-            }
-        }
-        stage('SonarQube analysis') {
-            agent {
-              docker {
-                image 'maven:3-jdk-8' 
-                args '-v /root/.m2:/root/.m2 --network=devonpresentation_devondemonet'
-              }
-            }
-            steps {
-                withSonarQubeEnv('sonar1') {
-                  // requires SonarQube Scanner for Maven 3.2+
-                  sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
-                }
-            }
-        }
+        // stage('Test') {
+        //     agent {
+        //       docker {
+        //         image 'maven:3-jdk-8' 
+        //         args '-v /root/.m2:/root/.m2 --network=devonpresentation_devondemonet'
+        //       }
+        //     }
+        //     steps {
+        //         sh 'mvn test'
+        //     }
+        //     post {
+        //         always {
+        //             junit 'target/surefire-reports/*.xml'
+        //         }
+        //     }
+        // }
+        // stage('SonarQube analysis') {
+        //     agent {
+        //       docker {
+        //         image 'maven:3-jdk-8' 
+        //         args '-v /root/.m2:/root/.m2 --network=devonpresentation_devondemonet'
+        //       }
+        //     }
+        //     steps {
+        //         withSonarQubeEnv('sonar1') {
+        //           // requires SonarQube Scanner for Maven 3.2+
+        //           sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
+        //         }
+        //     }
+        // }
         stage('Deploy') {
             agent any
             when {
@@ -50,7 +50,7 @@ pipeline {
               }
             }
             steps {
-                sh 'docker build -t "petclinic:latest" -f DeployDockerfile'
+                sh 'docker build -t "petclinic:latest" -f DeployDockerfile .'
             }
         }        
     }
