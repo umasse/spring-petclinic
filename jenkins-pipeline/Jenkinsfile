@@ -1,17 +1,24 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3-jdk-8' 
-            args '-v /root/.m2:/root/.m2 --network=devonpresentation_devondemonet'
-        }
-    }
+    agent none
     stages {
-        stage('Build') { 
+        stage('Build') {
+            agent {
+              docker {
+                image 'maven:3-jdk-8' 
+                args '-v /root/.m2:/root/.m2 --network=devonpresentation_devondemonet'
+              }
+            }
             steps {
                 sh 'mvn -B -DskipTests clean package' 
             }
         }
         stage('Test') {
+            agent {
+              docker {
+                image 'maven:3-jdk-8' 
+                args '-v /root/.m2:/root/.m2 --network=devonpresentation_devondemonet'
+              }
+            }
             steps {
                 sh 'mvn test'
             }
@@ -22,6 +29,12 @@ pipeline {
             }
         }
         stage('SonarQube analysis') {
+            agent {
+              docker {
+                image 'maven:3-jdk-8' 
+                args '-v /root/.m2:/root/.m2 --network=devonpresentation_devondemonet'
+              }
+            }
             steps {
                 withSonarQubeEnv('sonar1') {
                   // requires SonarQube Scanner for Maven 3.2+
@@ -30,7 +43,7 @@ pipeline {
             }
         }
         stage('Deploy') {
-            agent none
+            agent any
             when {
               expression {
                 currentBuild.result == null || currentBuild.result == 'SUCCESS' 
